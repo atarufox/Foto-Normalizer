@@ -6,6 +6,16 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [0.7.0] - Ottobre 2026
+
+### ✨ Nuove Funzionalità (Minor)
+- **Selezione Multipla con Checkbox**: aggiunta colonna di selezione rapida a sinistra con supporto nativo per selezioni d'intervallo (`Shift + Click`) e selezioni arbitrarie (`Ctrl + Click` / `Cmd + Click`).
+- **Rinomina Mirata ("Targeted Rename")**: possibilità di eseguire la rinomina esclusivamente sulle foto selezionate, con aggiornamento dinamico del pulsante d'azione nell'header (`Rinomina Selezionati (N)`).
+- **Banner di Selezione Rapida**: toolbar contestuale con conteggi in tempo reale e filtri rapidi (*Solo Pronte*, *Solo Collisioni*, *Seleziona Tutte*, *Deseleziona*).
+- **Pulizia Tabella**: rimossa la colonna "Azioni" ridondante in favore del click diretto su riga o miniatura per l'apertura dell'ispezione tecnica.
+
+---
+
 ## [0.6.1] - Ottobre 2026
 
 ### 🚀 Release
