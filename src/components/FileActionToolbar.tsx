@@ -89,7 +89,7 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-3 p-4 bg-slate-900/60 border-b border-slate-800">
+    <div className="flex flex-col gap-2.5 sm:gap-3 p-2.5 sm:p-4 bg-slate-900/60 border-b border-slate-800 max-w-full">
       {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
@@ -111,43 +111,45 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
       />
 
       {/* Row 1: Primary Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
         {/* Left: Folder Picker, Subfolders toggle, Analizza and STOP buttons */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5">
           <button
             onClick={onOpenDirectory}
-            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-all cursor-pointer shadow-xs whitespace-nowrap active:scale-98"
+            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-all cursor-pointer shadow-xs whitespace-nowrap active:scale-98"
             title="Seleziona la cartella principale contenente le fotografie"
           >
-            <FolderOpen className="w-4 h-4 text-emerald-100" />
-            <span>{folderName ? `Cartella: ${folderName}` : 'Seleziona Cartella'}</span>
+            <FolderOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-100 shrink-0" />
+            <span className="truncate max-w-[140px] xs:max-w-[200px] sm:max-w-none">
+              {folderName ? `Cartella: ${folderName}` : 'Seleziona Cartella'}
+            </span>
           </button>
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all cursor-pointer whitespace-nowrap"
           >
-            <Plus className="w-3.5 h-3.5 text-slate-400" />
+            <Plus className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <span>File Singoli</span>
           </button>
 
           {/* Subfolders Toggle Flag */}
-          <label className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 cursor-pointer select-none hover:border-slate-700 transition-colors">
+          <label className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300 cursor-pointer select-none hover:border-slate-700 transition-colors">
             <input
               type="checkbox"
               checked={includeSubfolders}
               onChange={(e) => onToggleIncludeSubfolders(e.target.checked)}
-              className="w-3.5 h-3.5 rounded text-emerald-500 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer"
+              className="w-3.5 h-3.5 rounded text-emerald-500 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer shrink-0"
             />
-            <FolderTree className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="font-medium">Includi sottocartelle</span>
+            <FolderTree className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+            <span className="font-medium whitespace-nowrap">Sottocartelle</span>
           </label>
 
           {/* Pulsante Analizza */}
           <button
             onClick={onStartAnalysis}
             disabled={!canAnalyze || isProcessing}
-            className={`flex items-center gap-2 px-4 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap shadow-sm ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap shadow-sm ${
               canAnalyze && !isProcessing
                 ? 'bg-blue-600 hover:bg-blue-500 text-white cursor-pointer active:scale-98'
                 : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
@@ -156,12 +158,12 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
           >
             {isProcessing ? (
               <>
-                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
                 <span>Analisi in corso...</span>
               </>
             ) : (
               <>
-                <Play className="w-3.5 h-3.5 text-white fill-white" />
+                <Play className="w-3.5 h-3.5 text-white fill-white shrink-0" />
                 <span>Analizza Foto</span>
               </>
             )}
@@ -171,31 +173,31 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
           {isProcessing && (
             <button
               onClick={onStopScan}
-              className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all cursor-pointer shadow-md animate-pulse active:scale-98 whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-500 text-white transition-all cursor-pointer shadow-md animate-pulse active:scale-98 whitespace-nowrap"
               title="Interrompi immediatamente l'analisi in corso"
             >
-              <Square className="w-3.5 h-3.5 fill-white" />
-              <span>STOP SCANSIONE</span>
+              <Square className="w-3.5 h-3.5 fill-white shrink-0" />
+              <span>STOP</span>
             </button>
           )}
         </div>
 
         {/* Right: Repository Archive Connection, Collision Strategy & Rollback Script Export */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5">
           {/* Central Repository Archive (20k+ photos) */}
           {repositoryFolderName ? (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-950/70 border border-indigo-700/60 text-xs shadow-xs">
+            <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-950/70 border border-indigo-700/60 text-xs shadow-xs">
               <Database className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-              <div className="flex items-center gap-1.5">
-                <span className="text-slate-400 font-medium">Repository:</span>
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-slate-400 font-medium hidden xs:inline">Repository:</span>
                 <span
-                  className="text-indigo-200 font-semibold max-w-[130px] truncate"
+                  className="text-indigo-200 font-semibold max-w-[100px] xs:max-w-[130px] truncate"
                   title={repositoryFolderName}
                 >
                   {repositoryFolderName}
                 </span>
                 <span className="px-1.5 py-0.2 rounded bg-indigo-900/90 text-indigo-300 font-mono text-[10px] font-bold">
-                  {repositoryFileCount.toLocaleString()} foto
+                  {repositoryFileCount.toLocaleString()}
                 </span>
               </div>
               <button
@@ -217,18 +219,19 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
             <button
               onClick={onSelectRepository}
               disabled={isScanningRepository}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-950 hover:bg-slate-900 text-slate-300 border border-slate-800 hover:border-indigo-500/50 transition-all cursor-pointer whitespace-nowrap active:scale-98"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-950 hover:bg-slate-900 text-slate-300 border border-slate-800 hover:border-indigo-500/50 transition-all cursor-pointer whitespace-nowrap active:scale-98"
               title="Collega una cartella Repository / Archivio (supporta 20.000+ foto) per evitare duplicati e collisioni orarie"
             >
               {isScanningRepository ? (
                 <>
-                  <div className="w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-indigo-400/30 border-t-indigo-400 rounded-full animate-spin shrink-0" />
                   <span>Indicizzazione Repo...</span>
                 </>
               ) : (
                 <>
-                  <Database className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>Collega Repository (Archivio 20k+)</span>
+                  <Database className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                  <span className="hidden sm:inline">Collega Repository (Archivio 20k+)</span>
+                  <span className="sm:hidden">Repository (20k+)</span>
                 </>
               )}
             </button>
@@ -239,29 +242,30 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
             className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300"
             title="Standard canonico Foto Normalizer: in caso di collisione oraria (nel set o con l'archivio Repository), il timestamp viene posticipato di +1s sequenziale con sincronizzazione EXIF in-place e formato YYYY-MM-DD_HH-MM-SS.jpg senza suffissi."
           >
-            <Settings2 className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-400">Regola collisioni:</span>
+            <Settings2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <span className="text-slate-400 hidden sm:inline">Regola collisioni:</span>
             <span className="font-mono text-emerald-400 font-medium">Incrementa EXIF (+1s)</span>
           </div>
 
           {canExportRollback && (
             <button
               onClick={onExportRollbackScripts}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 transition-all cursor-pointer whitespace-nowrap"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 transition-all cursor-pointer whitespace-nowrap"
               title="Esporta script per ripristinare i file (.bat / .sh) in caso di necessità"
             >
-              <FileDown className="w-3.5 h-3.5 text-amber-400" />
-              <span>Esporta Script Rollback</span>
+              <FileDown className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="hidden sm:inline">Esporta Script Rollback</span>
+              <span className="sm:hidden">Script Rollback</span>
             </button>
           )}
         </div>
       </div>
 
       {/* Row 2: Filter Tabs, Sort Selector, Page Size Selector, Search */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-850">
-        {/* Left: Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
-          <Filter className="w-3 h-3 text-slate-500 ml-1.5 mr-0.5" />
+      <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 pt-2 border-t border-slate-850">
+        {/* Left: Filter Tabs with horizontal smooth scroll on mobile */}
+        <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs overflow-x-auto no-scrollbar max-w-full">
+          <Filter className="w-3 h-3 text-slate-500 ml-1.5 mr-0.5 shrink-0" />
           {[
             { id: 'all', label: 'Tutti' },
             { id: 'valid', label: 'Da Rinominare' },
@@ -285,7 +289,7 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
             <button
               key={tab.id}
               onClick={() => onFilterChange(tab.id)}
-              className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                 activeFilter === tab.id
                   ? 'bg-slate-800 text-slate-100 shadow-xs'
                   : 'text-slate-400 hover:text-slate-200'
@@ -297,11 +301,11 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
         </div>
 
         {/* Right: Quick Sort Dropdown + Foto per Pagina Dropdown + Search Input */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
           {/* Quick Sort Dropdown */}
           <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300">
-            <ArrowUpDown className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="text-slate-400">Ordina:</span>
+            <ArrowUpDown className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span className="text-slate-400 hidden xs:inline">Ordina:</span>
             <select
               value={`${sortField}_${sortOrder}`}
               onChange={(e) => {
@@ -310,17 +314,17 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
               }}
               className="bg-transparent text-slate-200 text-xs font-mono focus:outline-hidden cursor-pointer"
             >
-              <option value="originalName_asc" className="bg-slate-900 text-slate-200">Nome originale (A-Z)</option>
-              <option value="originalName_desc" className="bg-slate-900 text-slate-200">Nome originale (Z-A)</option>
-              <option value="targetName_asc" className="bg-slate-900 text-slate-200">Nuovo nome target (A-Z)</option>
-              <option value="targetName_desc" className="bg-slate-900 text-slate-200">Nuovo nome target (Z-A)</option>
-              <option value="date_asc" className="bg-slate-900 text-slate-200">Data scatto (Più vecchia prima)</option>
-              <option value="date_desc" className="bg-slate-900 text-slate-200">Data scatto (Più recente prima)</option>
-              <option value="size_asc" className="bg-slate-900 text-slate-200">Dimensione (Piccola → Grande)</option>
-              <option value="size_desc" className="bg-slate-900 text-slate-200">Dimensione (Grande → Piccola)</option>
+              <option value="originalName_asc" className="bg-slate-900 text-slate-200">Nome orig. (A-Z)</option>
+              <option value="originalName_desc" className="bg-slate-900 text-slate-200">Nome orig. (Z-A)</option>
+              <option value="targetName_asc" className="bg-slate-900 text-slate-200">Nome target (A-Z)</option>
+              <option value="targetName_desc" className="bg-slate-900 text-slate-200">Nome target (Z-A)</option>
+              <option value="date_asc" className="bg-slate-900 text-slate-200">Data (Più vecchia)</option>
+              <option value="date_desc" className="bg-slate-900 text-slate-200">Data (Più recente)</option>
+              <option value="size_asc" className="bg-slate-900 text-slate-200">Dimensione (Piccola)</option>
+              <option value="size_desc" className="bg-slate-900 text-slate-200">Dimensione (Grande)</option>
               <option value="camera_asc" className="bg-slate-900 text-slate-200">Fotocamera (A-Z)</option>
               <option value="status_asc" className="bg-slate-900 text-slate-200">Stato operazione</option>
-              <option value="index_asc" className="bg-slate-900 text-slate-200">Ordine originale (#)</option>
+              <option value="index_asc" className="bg-slate-900 text-slate-200">Ordine iniziale (#)</option>
             </select>
           </div>
 
@@ -336,25 +340,25 @@ export const FileActionToolbar: React.FC<FileActionToolbarProps> = ({
               className="bg-transparent text-slate-200 text-xs font-mono font-semibold focus:outline-hidden cursor-pointer"
               title="Scegli quante fotografie visualizzare per pagina nella tabella"
             >
-              <option value={15} className="bg-slate-900 text-slate-200">15 foto</option>
-              <option value={25} className="bg-slate-900 text-slate-200">25 foto</option>
-              <option value={50} className="bg-slate-900 text-slate-200">50 foto</option>
-              <option value={100} className="bg-slate-900 text-slate-200">100 foto</option>
-              <option value={250} className="bg-slate-900 text-slate-200">250 foto</option>
-              <option value={500} className="bg-slate-900 text-slate-200">500 foto</option>
+              <option value={15} className="bg-slate-900 text-slate-200">15</option>
+              <option value={25} className="bg-slate-900 text-slate-200">25</option>
+              <option value={50} className="bg-slate-900 text-slate-200">50</option>
+              <option value={100} className="bg-slate-900 text-slate-200">100</option>
+              <option value={250} className="bg-slate-900 text-slate-200">250</option>
+              <option value={500} className="bg-slate-900 text-slate-200">500</option>
               <option value="all" className="bg-slate-900 text-slate-200">Tutte ({totalLoaded})</option>
             </select>
           </div>
 
           {/* Search Input */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-initial">
             <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Cerca foto o sottocartella..."
-              className="w-56 pl-8 pr-3 py-1.5 text-xs rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder-slate-500 focus:outline-hidden focus:border-slate-700 transition-colors font-mono"
+              placeholder="Cerca foto o cartella..."
+              className="w-full sm:w-52 md:w-56 pl-8 pr-3 py-1.5 text-xs rounded-lg bg-slate-950 border border-slate-800 text-slate-200 placeholder-slate-500 focus:outline-hidden focus:border-slate-700 transition-colors font-mono"
             />
           </div>
         </div>

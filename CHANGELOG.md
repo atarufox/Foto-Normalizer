@@ -6,6 +6,18 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [0.7.1] - 27 Ottobre 2026
+
+### 📱 Responsive & Mobile Optimization (Patch)
+- **Ottimizzazione Mobile & Tagli UI**: risolti i problemi di visualizzazione e overflow su dispositivi mobili (es. Motorola Moto G85, schermi compatti) senza alterare il layout desktop.
+- **Header & Action Bar Dinamici**: badge e pulsanti con etichette reattive al viewport, prevenendo l'overflow orizzontale della barra superiore.
+- **Barra Statistiche Adattiva**: griglia modulare a 2-3-6 colonne con formattazione numerica fluida e compatta.
+- **Toolbar & Filtri a Scorrimento Fluido**: schede di filtro orizzontali swipeable senza scrollbar antiestetiche (`no-scrollbar`).
+- **Griglia Dati & Paginazione Mobile**: contenitore tabella a scorrimento orizzontale nativo (larghezza minima 850px per preservare la leggibilità delle colonne) e paginatore compatto.
+- **Modali & Lightbox Mobile**: modali anteprima EXIF, Rollback e Changelog ridisegnate con padding adattivo e altezze massime fluide.
+
+---
+
 ## [0.7.0] - Ottobre 2026
 
 ### ✨ Nuove Funzionalità (Minor)

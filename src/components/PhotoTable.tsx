@@ -298,13 +298,13 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
     <div className="flex-1 flex flex-col bg-slate-950 overflow-hidden">
       {/* Targeted Selection Floating Banner */}
       {selectedPhotoIds.size > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-2 bg-emerald-950/60 border-b border-emerald-800/50 text-xs text-emerald-200 backdrop-blur z-20">
-          <div className="flex items-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-2.5 px-3 sm:px-6 py-2 bg-emerald-950/60 border-b border-emerald-800/50 text-xs text-emerald-200 backdrop-blur z-20">
+          <div className="flex items-center gap-2">
             <span className="flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold font-mono text-[11px] shadow-xs">
               {selectedPhotoIds.size.toLocaleString()}
             </span>
-            <span className="font-semibold text-white">
-              {selectedPhotoIds.size === 1 ? '1 foto selezionata' : `${selectedPhotoIds.size.toLocaleString()} foto selezionate`} per rinomina mirata
+            <span className="font-semibold text-white text-xs">
+              {selectedPhotoIds.size === 1 ? '1 foto selezionata' : `${selectedPhotoIds.size.toLocaleString()} foto selezionate`}
             </span>
             <span className="text-emerald-500/50 hidden md:inline">·</span>
             <span className="text-[11px] text-emerald-300/80 hidden lg:inline">
@@ -312,11 +312,11 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-1.5">
             {onSelectOnlyValid && validCount > 0 && (
               <button
                 onClick={onSelectOnlyValid}
-                className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-700/50 text-[11px] font-medium transition-colors cursor-pointer"
+                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-700/50 text-[11px] font-medium transition-colors cursor-pointer"
                 title="Seleziona solo le foto che necessitano di rinomina"
               >
                 Solo Pronte ({validCount})
@@ -325,23 +325,23 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
             {onSelectOnlyCollisions && collisionCount > 0 && (
               <button
                 onClick={onSelectOnlyCollisions}
-                className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-700/50 text-[11px] font-medium transition-colors cursor-pointer"
+                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-700/50 text-[11px] font-medium transition-colors cursor-pointer"
                 title="Seleziona solo le foto con collisione d'orario"
               >
-                Solo Collisioni ({collisionCount})
+                Solo Coll. ({collisionCount})
               </button>
             )}
             <button
               onClick={() => onSelectAll(true, sortedPhotos)}
-              className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-[11px] font-medium transition-colors cursor-pointer"
+              className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-[11px] font-medium transition-colors cursor-pointer"
               title="Seleziona tutte le foto visibili nella vista corrente"
             >
-              Seleziona Tutte ({sortedPhotos.length})
+              Tutte ({sortedPhotos.length})
             </button>
             {onClearSelection && (
               <button
                 onClick={onClearSelection}
-                className="px-2.5 py-1 rounded bg-emerald-900/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/50 text-[11px] font-semibold transition-colors cursor-pointer"
+                className="px-2 py-1 rounded bg-emerald-900/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/50 text-[11px] font-semibold transition-colors cursor-pointer"
               >
                 Deseleziona
               </button>
@@ -350,9 +350,9 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
         </div>
       )}
 
-      {/* Table Container */}
-      <div className="flex-1 overflow-auto">
-        <table className="w-full text-left text-xs border-collapse">
+      {/* Table Container with native horizontal/vertical smooth scrolling */}
+      <div className="flex-1 overflow-x-auto overflow-y-auto w-full">
+        <table className="min-w-[850px] w-full text-left text-xs border-collapse">
           <thead className="bg-slate-900/90 sticky top-0 z-10 border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider select-none">
             <tr>
               {/* Checkbox Column for Multi-Selection */}
@@ -774,9 +774,9 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
       </div>
 
       {/* Pagination Bar with Page Size Dropdown */}
-      <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-2.5 bg-slate-900 border-t border-slate-800 text-xs text-slate-400">
-        <div className="flex items-center gap-4">
-          <div>
+      <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 px-3 sm:px-6 py-2.5 bg-slate-900 border-t border-slate-800 text-xs text-slate-400">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
+          <div className="text-[11px] sm:text-xs">
             Mostrando{' '}
             {sortedPhotos.length > 0
               ? pageSize === 'all'
@@ -787,12 +787,12 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
             {pageSize === 'all'
               ? sortedPhotos.length
               : Math.min(currentPage * pageSize, sortedPhotos.length)}{' '}
-            di {sortedPhotos.length.toLocaleString()} foto ({photos.length.toLocaleString()} totali)
+            di {sortedPhotos.length.toLocaleString()} ({photos.length.toLocaleString()} tot)
           </div>
 
           {/* Page Size Dropdown */}
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Foto per pagina:</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-slate-400 text-[11px] sm:text-xs">Vedi:</span>
             <select
               value={pageSize}
               onChange={(e) => {
@@ -800,7 +800,7 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
                 onPageSizeChange(val);
                 setCurrentPage(1);
               }}
-              className="px-2 py-1 rounded bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono font-semibold focus:outline-hidden focus:border-slate-700 cursor-pointer"
+              className="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded bg-slate-950 border border-slate-800 text-slate-200 text-xs font-mono font-semibold focus:outline-hidden focus:border-slate-700 cursor-pointer"
             >
               <option value={15}>15</option>
               <option value={25}>25</option>
@@ -814,23 +814,23 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
         </div>
 
         {pageSize !== 'all' && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              className="px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
-              Precedente
+              Prec
             </button>
-            <span className="font-mono px-2">
-              Pagina {currentPage} di {totalPages}
+            <span className="font-mono text-[11px] sm:text-xs px-1 sm:px-2">
+              {currentPage} / {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              className="px-2 sm:px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
             >
-              Successiva
+              Succ
             </button>
           </div>
         )}

@@ -189,37 +189,37 @@ export const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
       >
         
         {/* Top Header: File Names, Navigation & Close Button */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-3.5 border-b border-slate-800 bg-slate-950">
+        <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-3 px-3 sm:px-6 py-2.5 sm:py-3.5 border-b border-slate-800 bg-slate-950">
           {/* File Identifiers */}
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
-              <FileImage className="w-5 h-5" />
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+              <FileImage className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-sm font-semibold text-slate-100 font-mono truncate max-w-[280px] sm:max-w-md">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h3 className="text-xs sm:text-sm font-semibold text-slate-100 font-mono truncate max-w-[180px] xs:max-w-[280px] sm:max-w-md">
                   {photo.status === 'renamed' ? photo.targetName : photo.originalName}
                 </h3>
 
                 {/* Index badge */}
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 shrink-0">
-                  {currentIndex + 1} di {photos.length}
+                <span className="text-[10px] sm:text-[11px] font-mono px-1.5 sm:px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 shrink-0">
+                  {currentIndex + 1} / {photos.length}
                 </span>
 
                 {/* Status Badges */}
                 {photo.status === 'renamed' && (
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shrink-0">
-                    Rinominato su disco
+                  <span className="text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shrink-0">
+                    Rinominato
                   </span>
                 )}
                 {photo.status === 'already_ok' && (
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+                  <span className="text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
                     Già conforme
                   </span>
                 )}
                 {isCollision && (
                   <span
-                    className={`text-[10px] font-mono font-medium px-2 py-0.5 rounded border shrink-0 flex items-center gap-1 ${
+                    className={`text-[10px] font-mono font-medium px-1.5 sm:px-2 py-0.5 rounded border shrink-0 flex items-center gap-1 ${
                       isRepoCollision
                         ? 'bg-indigo-500/25 text-indigo-300 border-indigo-500/40'
                         : 'bg-amber-500/25 text-amber-300 border-amber-500/40'
@@ -231,26 +231,25 @@ export const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
                         ? `+${photo.secondsShifted}s (Repo)`
                         : photo.secondsShifted
                         ? `+${photo.secondsShifted}s EXIF`
-                        : 'Collisione risolta'}
+                        : 'Collisione'}
                     </span>
                   </span>
                 )}
               </div>
 
-              <p className="text-xs text-slate-400 font-mono truncate mt-0.5">
+              <p className="text-[11px] sm:text-xs text-slate-400 font-mono truncate mt-0.5">
                 {photo.status === 'renamed' ? (
                   <span>
                     Origine: <span className="text-slate-300">{photo.originalName}</span>
                   </span>
                 ) : (
                   <span>
-                    Nuovo nome target:{' '}
-                    <span className="text-emerald-400 font-semibold">{photo.targetName}</span>
+                    Target: <span className="text-emerald-400 font-semibold">{photo.targetName}</span>
                   </span>
                 )}
                 {photo.relativePath && photo.relativePath.includes('/') && (
-                  <span className="text-slate-500 ml-2">
-                    · Sottocartella: {photo.relativePath.substring(0, photo.relativePath.lastIndexOf('/'))}/
+                  <span className="text-slate-500 ml-1.5">
+                    · {photo.relativePath.substring(0, photo.relativePath.lastIndexOf('/'))}/
                   </span>
                 )}
               </p>
@@ -258,11 +257,11 @@ export const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
           </div>
 
           {/* Quick Prev / Next Navigator & Close */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={handlePrev}
               disabled={!hasPrev}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              className="p-1 sm:p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
               title="Foto precedente (Freccia Sinistra)"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -270,15 +269,15 @@ export const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
             <button
               onClick={handleNext}
               disabled={!hasNext}
-              className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              className="p-1 sm:p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
               title="Foto successiva (Freccia Destra)"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
-            <div className="h-4 w-px bg-slate-800 mx-1" />
+            <div className="h-4 w-px bg-slate-800 mx-0.5 sm:mx-1" />
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors cursor-pointer"
+              className="p-1 sm:p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition-colors cursor-pointer"
               title="Chiudi visualizzatore e torna alla home (Esc)"
             >
               <X className="w-5 h-5" />
@@ -287,7 +286,7 @@ export const PhotoPreviewModal: React.FC<PhotoPreviewModalProps> = ({
         </div>
 
         {/* Tab Switcher: Anteprima & Dettagli, Tag EXIF, Marcatori, Diagnostica */}
-        <div className="flex items-center justify-between px-6 pt-2.5 pb-2 border-b border-slate-800 bg-slate-950/70 text-xs overflow-x-auto gap-2">
+        <div className="flex items-center justify-between px-3 sm:px-6 pt-2 pb-1.5 border-b border-slate-800 bg-slate-950/70 text-xs overflow-x-auto no-scrollbar gap-2">
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => setActiveTab('preview')}

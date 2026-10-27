@@ -831,12 +831,12 @@ export default function App() {
   const canAnalyze = stagedEntries.length > 0 || photos.length > 0 || directoryHandle !== null;
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-100 shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
-          <div className="w-2 h-2 rounded-full bg-emerald-400" />
-          <span>{toastMessage}</span>
+        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 max-w-[calc(100vw-2rem)] px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-100 shadow-xl flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
+          <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+          <span className="truncate">{toastMessage}</span>
         </div>
       )}
 

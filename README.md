@@ -1,4 +1,4 @@
-# Foto Normalizer (v0.7.0)
+# Foto Normalizer (v0.7.1)
 
 **Foto Normalizer** è uno strumento *privacy-first*, *local-first* ed eseguibile completamente *client-side* nel browser (anche come file HTML singolo autonomo offline), progettato per analizzare, validare, risolvere collisioni e normalizzare in modo sicuro gli archivi fotografici JPEG secondo la data di scatto canonica:
 
@@ -25,6 +25,7 @@ YYYY-MM-DD_HH-MM-SS.jpg
 - **Integrazione con Repository Esterno**: Indicizzazione di archivi centrali (20.000+ foto) con lookup $O(1)$ per evitare duplicazioni di nomi anche tra lotti diversi.
 - **Visualizzatore & Ispezione EXIF Unificata**: Anteprima foto ad alta risoluzione con Lightbox a schermo intero (apribile con click diretto sulla foto o all'esterno per chiudere), controlli di zoom/rotazione, tabella di tutti i tag EXIF, marcatori binari JPEG e segnalazione anomalie/sicurezza.
 - **Selezione Multipla Avanzata & Rinomina Mirata**: Selezione flessibile tramite checkbox, selezione d'intervallo con `Shift + Click` e selezione arbitraria con `Ctrl + Click`, toolbar contestuale e rinomina mirata solo delle foto selezionate.
+- **Interfaccia Totalmente Responsiva & Mobile-First**: Layout ottimizzato per smartphone (es. schermi compatti, Motorola Moto G85, Android/iOS) e desktop, con navigazione a schede swipeable, tabelle a scorrimento orizzontale nativo senza tagli e modali ad auto-adattamento.
 - **Rollback Snapshot Versionato**: Generazione automatica di snapshot con manifest JSON e script eseguibili per Windows (`.bat`) e Unix/macOS (`.sh`).
 
 ---
@@ -99,5 +100,5 @@ Distribuito come software proprietario / open-source secondo le politiche del re
 
 ---
 
-**Ultimo aggiornamento:** 27 Ottobre 2026, 17:00 (CET)
+**Ultimo aggiornamento:** 27 Ottobre 2026, 21:10 (CET)
 
