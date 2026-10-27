@@ -95,3 +95,8 @@ npm run lint
 ## 📄 Licenza
 
 Distribuito come software proprietario / open-source secondo le politiche del repository.
+
+---
+
+**Ultimo aggiornamento:** 27 Ottobre 2026, 13:31 (CET)
+
