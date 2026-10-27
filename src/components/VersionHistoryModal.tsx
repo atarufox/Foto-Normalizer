@@ -106,14 +106,50 @@ export const VersionHistoryModal: React.FC<VersionHistoryModalProps> = ({
               Cronologia Versioni Applicazione
             </h4>
 
-            {/* Version 0.6.0 */}
+            {/* Version 0.7.2 */}
             <div className="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-sm text-emerald-400">v0.6.0</span>
+                  <span className="font-mono font-bold text-sm text-emerald-400">v0.7.2</span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-semibold">
                     Ultima Release
                   </span>
+                </div>
+                <span className="text-slate-500 font-mono text-[11px]">27 Ottobre 2026</span>
+              </div>
+              <ul className="space-y-1.5 text-slate-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Allineamento Changelog In-App:</strong> Integrata la cronologia completa delle versioni direttamente nella modale informativa consultabile con un click sul badge di versione in alto a sinistra.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Version 0.7.1 */}
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-sm text-slate-200">v0.7.1</span>
+                </div>
+                <span className="text-slate-500 font-mono text-[11px]">27 Ottobre 2026</span>
+              </div>
+              <ul className="space-y-1.5 text-slate-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Ottimizzazione Mobile &amp; Layout Responsive:</strong> Risolti i problemi di overflow e visualizzazione su dispositivi compatti (es. Motorola Moto G85, ~393px viewport). Header fluido, statistiche a 2 colonne, toolbar swipeable e tabella con scorrimento orizzontale nativo.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Version 0.7.0 */}
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-sm text-slate-200">v0.7.0</span>
                 </div>
                 <span className="text-slate-500 font-mono text-[11px]">Ottobre 2026</span>
               </div>
@@ -121,7 +157,55 @@ export const VersionHistoryModal: React.FC<VersionHistoryModalProps> = ({
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Audit & Pulizia Dipendenze:</strong> Rimossi moduli npm non utilizzati (<code>@google/genai</code>, <code>express</code>, <code>dotenv</code>, <code>jszip</code>, <code>motion</code>) e configurazioni residue dei template AI Studio.
+                    <strong>Selezione Multipla con Checkbox:</strong> Nuova colonna sinistra per selezionare foto singole, intervalli con <code>Shift + Click</code> o selezioni multiple con <code>Ctrl + Click</code> / <code>Cmd + Click</code>.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Rinomina Mirata (&quot;Targeted Rename&quot;):</strong> Esecuzione della rinomina applicabile esclusivamente alle foto selezionate, con aggiornamento dinamico dell&apos;azione principale.
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Pulizia Tabella:</strong> Rimossa la colonna &quot;Azioni&quot; ridondante; apertura immediata della preview cliccando direttamente su riga o miniatura.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Version 0.6.1 */}
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-sm text-slate-300">v0.6.1</span>
+                </div>
+                <span className="text-slate-500 font-mono text-[11px]">Ottobre 2026</span>
+              </div>
+              <ul className="space-y-1.5 text-slate-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Allineamento Versioning GitHub:</strong> Configurazione sincronizzazione automatica repository e uniformazione versioni pacchetto.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Version 0.6.0 */}
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-sm text-slate-300">v0.6.0</span>
+                </div>
+                <span className="text-slate-500 font-mono text-[11px]">Ottobre 2026</span>
+              </div>
+              <ul className="space-y-1.5 text-slate-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Audit &amp; Pulizia Dipendenze:</strong> Rimossi moduli npm non utilizzati (<code>@google/genai</code>, <code>express</code>, <code>dotenv</code>, <code>jszip</code>, <code>motion</code>) e configurazioni residue dei template AI Studio.
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -133,13 +217,13 @@ export const VersionHistoryModal: React.FC<VersionHistoryModalProps> = ({
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Safety & Protezione Sovrascrittura:</strong> Verifica di collisione fisica su disco prima della scrittura. Gli errori parziali lasciano uno stato pulito e lo snapshot include unicamente i file realmente rinominati su disco.
+                    <strong>Safety &amp; Protezione Sovrascrittura:</strong> Verifica di collisione fisica su disco prima della scrittura. Gli errori parziali lasciano uno stato pulito e lo snapshot include unicamente i file realmente rinominati su disco.
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Unificazione Versioning & Trasparenza:</strong> Centralizzata la costante <code>APP_VERSION</code> e chiarita la distinzione tra velocità di parsing in memoria (~0.002s) e throughput I/O reale del filesystem.
+                    <strong>Unificazione Versioning &amp; Trasparenza:</strong> Centralizzata la costante <code>APP_VERSION</code> e chiarita la distinzione tra velocità di parsing in memoria (~0.002s) e throughput I/O reale del filesystem.
                   </span>
                 </li>
               </ul>

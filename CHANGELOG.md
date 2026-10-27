@@ -6,6 +6,13 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [0.7.2] - 27 Ottobre 2026
+
+### 📝 Integrazione Changelog In-App (Patch)
+- **Allineamento Modale Changelog**: aggiornata la schermata informativa visualizzabile al click sul badge di versione nell'header (`v0.7.2`), includendo lo storico completo delle versioni `v0.7.2`, `v0.7.1`, `v0.7.0` e `v0.6.1`.
+
+---
+
 ## [0.7.1] - 27 Ottobre 2026
 
 ### 📱 Responsive & Mobile Optimization (Patch)
