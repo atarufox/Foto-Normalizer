@@ -51,6 +51,10 @@ export default function App() {
   const [repositoryNamesSet, setRepositoryNamesSet] = useState<Set<string> | null>(null);
   const [isScanningRepository, setIsScanningRepository] = useState<boolean>(false);
 
+  // Multi-Selection State (for Targeted Rename)
+  const [selectedPhotoIds, setSelectedPhotoIds] = useState<Set<string>>(new Set());
+  const lastSelectedIdRef = useRef<string | null>(null);
+
   // Modals
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoItem | null>(null);
   const [previewPhoto, setPreviewPhoto] = useState<PhotoItem | null>(null);
@@ -355,6 +359,78 @@ export default function App() {
     showToast('Interruzione scansione in corso...');
   };
 
+  // Multi-Selection Handlers (Click, Shift+Click, Ctrl+Click)
+  const handleToggleSelectPhoto = (
+    id: string,
+    isShift = false,
+    _isCtrl = false,
+    orderedList?: PhotoItem[]
+  ) => {
+    setSelectedPhotoIds((prev) => {
+      const next = new Set(prev);
+      const list = orderedList || photos;
+
+      if (isShift && lastSelectedIdRef.current) {
+        const lastIdx = list.findIndex((p) => p.id === lastSelectedIdRef.current);
+        const currentIdx = list.findIndex((p) => p.id === id);
+
+        if (lastIdx !== -1 && currentIdx !== -1) {
+          const start = Math.min(lastIdx, currentIdx);
+          const end = Math.max(lastIdx, currentIdx);
+          for (let i = start; i <= end; i++) {
+            next.add(list[i].id);
+          }
+          return next;
+        }
+      }
+
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+
+      lastSelectedIdRef.current = id;
+      return next;
+    });
+  };
+
+  const handleSelectAll = (select: boolean, list?: PhotoItem[]) => {
+    const targetList = list || photos;
+    setSelectedPhotoIds((prev) => {
+      const next = new Set(prev);
+      if (select) {
+        for (const p of targetList) {
+          next.add(p.id);
+        }
+      } else {
+        for (const p of targetList) {
+          next.delete(p.id);
+        }
+      }
+      return next;
+    });
+  };
+
+  const handleSelectOnlyCollisions = () => {
+    const collisions = photos.filter((p) => p.isCollision || p.status === 'collision_resolved');
+    setSelectedPhotoIds(new Set(collisions.map((p) => p.id)));
+    showToast(`Selezionate ${collisions.length} foto con collisione oraria.`);
+  };
+
+  const handleSelectOnlyValid = () => {
+    const valid = photos.filter(
+      (p) => (p.status === 'valid' || p.status === 'collision_resolved') && p.targetName !== p.originalName
+    );
+    setSelectedPhotoIds(new Set(valid.map((p) => p.id)));
+    showToast(`Selezionate ${valid.length} foto pronte per la rinomina.`);
+  };
+
+  const handleClearSelection = () => {
+    setSelectedPhotoIds(new Set());
+    lastSelectedIdRef.current = null;
+  };
+
   // Parse staged entries in batches using unified high-speed binary parser
   const parseStagedEntries = async (entries: StagedEntry[], colMode: CollisionMode) => {
     setIsProcessing(true);
@@ -457,11 +533,22 @@ export default function App() {
     if (photos.length === 0) return;
 
     // Filter valid items that actually need renaming
-    const validToRename = photos.filter(
+    const allValidToRename = photos.filter(
       (p) => (p.status === 'valid' || p.status === 'collision_resolved') && p.targetName !== p.originalName
     );
+
+    // Targeted selection: if items are selected, only rename selected valid items
+    const isTargeted = selectedPhotoIds.size > 0;
+    const validToRename = isTargeted
+      ? allValidToRename.filter((p) => selectedPhotoIds.has(p.id))
+      : allValidToRename;
+
     if (validToRename.length === 0) {
-      showToast('Nessun file da rinominare: tutti i file sono già conformi al formato standard.');
+      if (isTargeted) {
+        showToast('Nessuna delle foto selezionate richiede la rinomina (sono già conformi o presentano errori).');
+      } else {
+        showToast('Nessun file da rinominare: tutti i file sono già conformi al formato standard.');
+      }
       return;
     }
 
@@ -576,6 +663,15 @@ export default function App() {
           );
           setSnapshots((prev) => [...prev, snapshot]);
           setCurrentSnapshot(snapshot);
+
+          // Clear successfully renamed items from selection
+          setSelectedPhotoIds((prev) => {
+            const next = new Set(prev);
+            for (const item of successfulPhotos) {
+              next.delete(item.id);
+            }
+            return next;
+          });
         }
 
         // Update overall photos state
@@ -587,7 +683,11 @@ export default function App() {
         setSelectedPhoto((prev) => (prev ? updated.find((u) => u.id === prev.id) || prev : null));
 
         if (failCount === 0) {
-          showToast(`Rinominati ${inPlaceCount} file su disco con successo! Creato snapshot v${nextVersion}.`);
+          showToast(
+            isTargeted
+              ? `Rinominate in modo mirato ${inPlaceCount} foto selezionate con successo! Creato snapshot v${nextVersion}.`
+              : `Rinominati ${inPlaceCount} file su disco con successo! Creato snapshot v${nextVersion}.`
+          );
         } else if (inPlaceCount > 0) {
           showToast(`Rinominati ${inPlaceCount} file (${failCount} non riusciti). Creato snapshot v${nextVersion} per i file rinominati.`);
         } else {
@@ -716,7 +816,18 @@ export default function App() {
     showToast(`Scaricati script di rollback per snapshot v${snap.versionNumber}`);
   };
 
-  const canRename = stats.valid > 0 && stats.renamed === 0;
+  const selectedCount = selectedPhotoIds.size;
+  const targetRenameCount = useMemo(() => {
+    const allValid = photos.filter(
+      (p) => (p.status === 'valid' || p.status === 'collision_resolved') && p.targetName !== p.originalName
+    );
+    if (selectedCount > 0) {
+      return allValid.filter((p) => selectedPhotoIds.has(p.id)).length;
+    }
+    return allValid.length;
+  }, [photos, selectedPhotoIds, selectedCount]);
+
+  const canRename = targetRenameCount > 0 && stats.renamed === 0;
   const canAnalyze = stagedEntries.length > 0 || photos.length > 0 || directoryHandle !== null;
 
   return (
@@ -740,6 +851,8 @@ export default function App() {
         isRenaming={isRenaming}
         renamedCount={stats.renamed}
         snapshotsCount={snapshots.length}
+        selectedCount={selectedCount}
+        targetRenameCount={targetRenameCount}
       />
 
       {/* Incremental Stats Bar */}
@@ -781,9 +894,15 @@ export default function App() {
         collisionCount={stats.collisions}
       />
 
-      {/* High-Density Data Grid with Sorting & Unified Preview/Inspector */}
+      {/* High-Density Data Grid with Sorting & Multi-Selection */}
       <PhotoTable
         photos={photos}
+        selectedPhotoIds={selectedPhotoIds}
+        onToggleSelectPhoto={handleToggleSelectPhoto}
+        onSelectAll={handleSelectAll}
+        onSelectOnlyCollisions={handleSelectOnlyCollisions}
+        onSelectOnlyValid={handleSelectOnlyValid}
+        onClearSelection={handleClearSelection}
         onSelectPhoto={(photo) => {
           setSelectedPhoto(photo);
           setPreviewPhoto(photo);

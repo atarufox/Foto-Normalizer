@@ -1,10 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { PhotoItem, SortField, SortOrder } from '../types';
 import {
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  ChevronRight,
   RotateCcw,
   Camera,
   FolderOpen,
@@ -12,13 +11,25 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
-  Eye,
   FileImage,
   Clock,
+  Check,
+  MousePointerClick,
 } from 'lucide-react';
 
 interface PhotoTableProps {
   photos: PhotoItem[];
+  selectedPhotoIds: Set<string>;
+  onToggleSelectPhoto: (
+    id: string,
+    isShift?: boolean,
+    isCtrl?: boolean,
+    orderedList?: PhotoItem[]
+  ) => void;
+  onSelectAll: (select: boolean, list?: PhotoItem[]) => void;
+  onSelectOnlyCollisions?: () => void;
+  onSelectOnlyValid?: () => void;
+  onClearSelection?: () => void;
   onSelectPhoto: (photo: PhotoItem) => void;
   onPreviewPhoto: (photo: PhotoItem) => void;
   selectedPhotoId: string | null;
@@ -34,6 +45,12 @@ interface PhotoTableProps {
 
 export const PhotoTable: React.FC<PhotoTableProps> = ({
   photos,
+  selectedPhotoIds,
+  onToggleSelectPhoto,
+  onSelectAll,
+  onSelectOnlyCollisions,
+  onSelectOnlyValid,
+  onClearSelection,
   onSelectPhoto,
   onPreviewPhoto,
   selectedPhotoId,
@@ -48,6 +65,7 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [thumbnailUrls, setThumbnailUrls] = useState<Map<string, string>>(new Map());
+  const headerCheckboxRef = useRef<HTMLInputElement>(null);
 
   // Check if any photos have relative subfolder paths
   const hasSubfolders = useMemo(() => {
@@ -163,6 +181,36 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
     return sortedPhotos.slice(start, start + effectivePageSize);
   }, [sortedPhotos, currentPage, effectivePageSize, pageSize]);
 
+  // Multi-selection state calculations
+  const selectedInFilterCount = useMemo(() => {
+    let count = 0;
+    for (const p of filteredPhotos) {
+      if (selectedPhotoIds.has(p.id)) count++;
+    }
+    return count;
+  }, [filteredPhotos, selectedPhotoIds]);
+
+  const isAllFilterSelected = filteredPhotos.length > 0 && selectedInFilterCount === filteredPhotos.length;
+  const isPartiallySelected = selectedInFilterCount > 0 && !isAllFilterSelected;
+
+  // Sync indeterminate state to header checkbox DOM element
+  useEffect(() => {
+    if (headerCheckboxRef.current) {
+      headerCheckboxRef.current.indeterminate = isPartiallySelected;
+    }
+  }, [isPartiallySelected]);
+
+  // Count ready to rename & collisions in current set
+  const validCount = useMemo(() => {
+    return photos.filter(
+      (p) => (p.status === 'valid' || p.status === 'collision_resolved') && p.targetName !== p.originalName
+    ).length;
+  }, [photos]);
+
+  const collisionCount = useMemo(() => {
+    return photos.filter((p) => p.isCollision || p.status === 'collision_resolved').length;
+  }, [photos]);
+
   // Generate thumbnail object URLs for visible items
   useEffect(() => {
     let active = true;
@@ -248,11 +296,81 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
 
   return (
     <div className="flex-1 flex flex-col bg-slate-950 overflow-hidden">
+      {/* Targeted Selection Floating Banner */}
+      {selectedPhotoIds.size > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-2 bg-emerald-950/60 border-b border-emerald-800/50 text-xs text-emerald-200 backdrop-blur z-20">
+          <div className="flex items-center gap-2.5">
+            <span className="flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-emerald-500 text-slate-950 font-bold font-mono text-[11px] shadow-xs">
+              {selectedPhotoIds.size.toLocaleString()}
+            </span>
+            <span className="font-semibold text-white">
+              {selectedPhotoIds.size === 1 ? '1 foto selezionata' : `${selectedPhotoIds.size.toLocaleString()} foto selezionate`} per rinomina mirata
+            </span>
+            <span className="text-emerald-500/50 hidden md:inline">·</span>
+            <span className="text-[11px] text-emerald-300/80 hidden lg:inline">
+              <kbd className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px] font-mono text-slate-200">Shift + Click</kbd> seleziona intervallo · <kbd className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-[10px] font-mono text-slate-200">Ctrl + Click</kbd> selezione multipla
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {onSelectOnlyValid && validCount > 0 && (
+              <button
+                onClick={onSelectOnlyValid}
+                className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-700/50 text-[11px] font-medium transition-colors cursor-pointer"
+                title="Seleziona solo le foto che necessitano di rinomina"
+              >
+                Solo Pronte ({validCount})
+              </button>
+            )}
+            {onSelectOnlyCollisions && collisionCount > 0 && (
+              <button
+                onClick={onSelectOnlyCollisions}
+                className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-700/50 text-[11px] font-medium transition-colors cursor-pointer"
+                title="Seleziona solo le foto con collisione d'orario"
+              >
+                Solo Collisioni ({collisionCount})
+              </button>
+            )}
+            <button
+              onClick={() => onSelectAll(true, sortedPhotos)}
+              className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-[11px] font-medium transition-colors cursor-pointer"
+              title="Seleziona tutte le foto visibili nella vista corrente"
+            >
+              Seleziona Tutte ({sortedPhotos.length})
+            </button>
+            {onClearSelection && (
+              <button
+                onClick={onClearSelection}
+                className="px-2.5 py-1 rounded bg-emerald-900/80 hover:bg-emerald-800 text-emerald-100 border border-emerald-600/50 text-[11px] font-semibold transition-colors cursor-pointer"
+              >
+                Deseleziona
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Table Container */}
       <div className="flex-1 overflow-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead className="bg-slate-900/90 sticky top-0 z-10 border-b border-slate-800 text-slate-400 font-mono text-[11px] uppercase tracking-wider select-none">
             <tr>
+              {/* Checkbox Column for Multi-Selection */}
+              <th className="py-2.5 px-3 w-10 text-center">
+                <input
+                  ref={headerCheckboxRef}
+                  type="checkbox"
+                  checked={isAllFilterSelected}
+                  onChange={(e) => onSelectAll(e.target.checked, sortedPhotos)}
+                  className="w-4 h-4 rounded text-emerald-500 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer accent-emerald-500 align-middle"
+                  title={
+                    isAllFilterSelected
+                      ? 'Deseleziona tutte le foto visibili'
+                      : 'Seleziona tutte le foto visibili per la rinomina mirata'
+                  }
+                />
+              </th>
+
               {/* Index Column (#) */}
               <th
                 onClick={() => handleHeaderClick('index')}
@@ -357,15 +475,14 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
                   {renderSortIndicator('status')}
                 </span>
               </th>
-
-              <th className="py-2.5 px-3 w-16 text-center">Azioni</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-850/60 font-sans">
             {pageItems.map((item, idx) => {
               const rowIndex =
                 pageSize === 'all' ? idx + 1 : (currentPage - 1) * pageSize + idx + 1;
-              const isSelected = item.id === selectedPhotoId;
+              const isInspected = item.id === selectedPhotoId;
+              const isChecked = selectedPhotoIds.has(item.id);
               const thumbUrl = thumbnailUrls.get(item.id);
 
               const subDir =
@@ -379,10 +496,18 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
               return (
                 <tr
                   key={item.id}
-                  onClick={() => onSelectPhoto(item)}
+                  onClick={(e) => {
+                    if (e.shiftKey || e.ctrlKey || e.metaKey) {
+                      onToggleSelectPhoto(item.id, e.shiftKey, e.ctrlKey || e.metaKey, sortedPhotos);
+                    } else {
+                      onSelectPhoto(item);
+                    }
+                  }}
                   className={`group transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-slate-800/90 border-l-4 border-emerald-400 ring-1 ring-emerald-500/20'
+                    isChecked
+                      ? 'bg-emerald-950/40 hover:bg-emerald-950/60 border-l-4 border-emerald-400 ring-1 ring-emerald-500/30'
+                      : isInspected
+                      ? 'bg-slate-800/90 border-l-4 border-cyan-400 ring-1 ring-cyan-500/20'
                       : isCollision
                       ? isRepoCollision
                         ? 'bg-indigo-950/30 hover:bg-indigo-950/50 border-l-4 border-indigo-500'
@@ -390,12 +515,30 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
                       : 'hover:bg-slate-900/60 border-l-4 border-transparent'
                   }`}
                 >
+                  {/* Selection Checkbox */}
+                  <td
+                    className="py-2 px-3 text-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleSelectPhoto(item.id, e.shiftKey, e.ctrlKey || e.metaKey, sortedPhotos);
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => {}}
+                      className="w-4 h-4 rounded text-emerald-500 bg-slate-900 border-slate-700 focus:ring-0 cursor-pointer accent-emerald-500 align-middle"
+                    />
+                  </td>
+
                   {/* Row index with collision warning icon */}
                   <td className="py-2 px-3 text-center font-mono text-[11px]">
                     <div className="flex items-center justify-center gap-1.5">
                       <span
                         className={
-                          isCollision
+                          isChecked
+                            ? 'text-emerald-300 font-bold'
+                            : isCollision
                             ? isRepoCollision
                               ? 'text-indigo-400 font-bold'
                               : 'text-amber-400 font-bold'
@@ -621,23 +764,6 @@ export const PhotoTable: React.FC<PhotoTableProps> = ({
                           <span>{item.statusMessage || 'Errore'}</span>
                         </span>
                       )}
-                    </div>
-                  </td>
-
-                  {/* Row Actions: Preview Button + Chevron */}
-                  <td className="py-2 px-3 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onPreviewPhoto(item);
-                        }}
-                        className="p-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 transition-colors cursor-pointer"
-                        title="Anteprima e scheda tecnica foto"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                      </button>
-                      <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-slate-300" />
                     </div>
                   </td>
                 </tr>

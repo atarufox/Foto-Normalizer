@@ -12,6 +12,8 @@ interface HeaderProps {
   isRenaming: boolean;
   renamedCount: number;
   snapshotsCount: number;
+  selectedCount?: number;
+  targetRenameCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -24,6 +26,8 @@ export const Header: React.FC<HeaderProps> = ({
   isRenaming,
   renamedCount,
   snapshotsCount,
+  selectedCount = 0,
+  targetRenameCount = 0,
 }) => {
   return (
     <header className="flex items-center justify-between gap-6 px-6 py-3 bg-slate-900/90 border-b border-slate-800 backdrop-blur sticky top-0 z-30">
@@ -90,21 +94,31 @@ export const Header: React.FC<HeaderProps> = ({
               ? 'bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer active:scale-98'
               : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
           }`}
+          title={
+            selectedCount > 0
+              ? `Rinomina in modo mirato solo le ${targetRenameCount} foto selezionate pronte per la rinomina`
+              : 'Rinomina tutte le foto conformi e pronte sul filesystem'
+          }
         >
           {isRenaming ? (
             <>
               <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               <span>Rinomina in corso...</span>
             </>
-          ) : renamedCount > 0 ? (
+          ) : renamedCount > 0 && targetRenameCount === 0 ? (
             <>
               <CheckCircle className="w-3.5 h-3.5 text-emerald-200" />
               <span>Rinominati ({renamedCount})</span>
             </>
+          ) : selectedCount > 0 ? (
+            <>
+              <Play className="w-3.5 h-3.5 text-white" />
+              <span>Rinomina Selezionati ({targetRenameCount})</span>
+            </>
           ) : (
             <>
               <Play className="w-3.5 h-3.5 text-white" />
-              <span>Esegui Rinomina</span>
+              <span>Esegui Rinomina {targetRenameCount > 0 ? `(${targetRenameCount})` : ''}</span>
             </>
           )}
         </button>
