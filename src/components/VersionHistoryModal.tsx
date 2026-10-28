@@ -106,14 +106,32 @@ export const VersionHistoryModal: React.FC<VersionHistoryModalProps> = ({
               Cronologia Versioni Applicazione
             </h4>
 
-            {/* Version 0.7.2 */}
+            {/* Version 0.7.3 */}
             <div className="p-4 rounded-xl bg-slate-950 border border-emerald-500/30 space-y-2.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-sm text-emerald-400">v0.7.2</span>
+                  <span className="font-mono font-bold text-sm text-emerald-400">v0.7.3</span>
                   <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-semibold">
                     Ultima Release
                   </span>
+                </div>
+                <span className="text-slate-500 font-mono text-[11px]">28 Ottobre 2026</span>
+              </div>
+              <ul className="space-y-1.5 text-slate-300">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Pulizia Repository &amp; Workspace:</strong> Rimossi tutti i file residui non pertinenti e script di test obsoleti; inclusione di <code>.gitignore</code> per una repository pulita e minimale.
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Version 0.7.2 */}
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono font-bold text-sm text-slate-200">v0.7.2</span>
                 </div>
                 <span className="text-slate-500 font-mono text-[11px]">27 Ottobre 2026</span>
               </div>

@@ -6,6 +6,14 @@ Il formato è basato su [Keep a Changelog](https://keepachangelog.com/it/1.0.0/)
 
 ---
 
+## [0.7.3] - 28 Ottobre 2026
+
+### 🧹 Pulizia Repository & Manutenzione (Patch)
+- **Eliminazione File Residui e Script di Test**: rimossi tutti i file estranei al progetto (schemi JSON non correlati, server mock, script temporanei di debug e test).
+- **Inclusione `.gitignore`**: aggiunta configurazione Git standard per prevenire il tracciamento di cache, dipendenze `node_modules` e file d'ambiente locali.
+
+---
+
 ## [0.7.2] - 27 Ottobre 2026
 
 ### 📝 Integrazione Changelog In-App (Patch)

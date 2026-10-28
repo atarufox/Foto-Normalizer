@@ -1,4 +1,4 @@
-# Foto Normalizer (v0.7.2)
+# Foto Normalizer (v0.7.3)
 
 **Foto Normalizer** è uno strumento *privacy-first*, *local-first* ed eseguibile completamente *client-side* nel browser (anche come file HTML singolo autonomo offline), progettato per analizzare, validare, risolvere collisioni e normalizzare in modo sicuro gli archivi fotografici JPEG secondo la data di scatto canonica:
 
@@ -100,5 +100,5 @@ Distribuito come software proprietario / open-source secondo le politiche del re
 
 ---
 
-**Ultimo aggiornamento:** 27 Ottobre 2026, 23:48 (CET)
+**Ultimo aggiornamento:** 28 Ottobre 2026, 15:23 (CET)
 
