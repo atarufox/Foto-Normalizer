@@ -1,4 +1,4 @@
-export const APP_VERSION = '0.7.3';
+export const APP_VERSION = '0.8.0';
 
 export type PhotoStatus =
   | 'pending'

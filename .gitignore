@@ -1,8 +1,26 @@
+# Dependencies & Package managers
 node_modules/
-build/
+build/node_modules/
+.npm/
+package-lock.json
+build/package-lock.json
+
+# Compilation outputs & Artifacts
 dist/
-coverage/
-.DS_Store
+build/dist/
+build/output/
+bin/
+obj/
+build/bin/
+build/obj/
+.gradle/
+build/.gradle/
 *.log
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Environment variables & Local credentials
 .env*
-!.env.example
+build/.env*
+!build/.env.example
